@@ -5,9 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#8b5e8f" />
   <title>RDV Beauté — Espace pro</title>
-  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="vendor/react.production.min.js"></script>
+  <script src="vendor/react-dom.production.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -173,71 +172,191 @@
 </head>
 <body>
 <div id="root"></div>
-<script type="text/babel">
-const { useState, useEffect } = React;
-
+<script>
+const {
+  useState,
+  useEffect
+} = React;
 const ADMIN_PASSWORD = "linstantk2026";
-
-const DEFAULT_CATS = [
-  { id:"manucure", label:"Manucure", icon:"💅", items:[
-    {id:"m1",label:"Gainage sur ongle naturel",prix:35},
-    {id:"m2",label:"Pose Gel X",prix:40},
-    {id:"m3",label:"Pose chablon",prix:50},
-    {id:"m4",label:"Remplissage",prix:35},
-    {id:"m5",label:"Remplissage pose extérieur",prix:40},
-    {id:"m6",label:"Dépose Acrylique",prix:20},
-    {id:"m7",label:"Dépose",prix:15},
-    {id:"m8",label:"Nail art",prix:null},
-  ]},
-  { id:"pedicure", label:"Pédicure", icon:"🦶", items:[
-    {id:"p1",label:"Vernis semi-perm simple",prix:20},
-    {id:"p2",label:"Semi-Perm avec extension gros orteil",prix:35},
-    {id:"p3",label:"Dépose + Repose vernis simple",prix:25},
-    {id:"p4",label:"Remplissage",prix:30},
-    {id:"p5",label:"Dépose acrylique",prix:20},
-    {id:"p6",label:"Dépose",prix:15},
-    {id:"p7",label:"Déco (strass, dessin, french élaboré)",prix:5},
-  ]},
-  { id:"soins-pieds", label:"Soins des pieds", icon:"✨", items:[
-    {id:"sp1",label:"Talon express",prix:25},
-    {id:"sp2",label:"Soins des pieds",prix:40},
-    {id:"sp3",label:"Soins + vernis semi-perm simple",prix:50},
-    {id:"sp4",label:"Soins dépose + repose + vernis semi-perm",prix:60},
-    {id:"sp5",label:"Soins + remplissage",prix:65},
-    {id:"sp6",label:"Soins + vernis semi-perm + extension gros orteil",prix:70},
-  ]},
-  { id:"visage", label:"Soins du visage", icon:"🌸", items:[
-    {id:"v1",label:"Soins du visage",prix:45},
-  ]},
-  { id:"epilations", label:"Épilations", icon:"🌿", items:[
-    {id:"e1",label:"Sourcils",prix:10},
-    {id:"e2",label:"Lèvre",prix:10},
-    {id:"e3",label:"Aiselles",prix:10},
-    {id:"e4",label:"Demi-jambe",prix:15},
-    {id:"e5",label:"Jambes entières",prix:28},
-    {id:"e6",label:"Maillot échancré",prix:25},
-    {id:"e7",label:"Maillot intégral",prix:30},
-    {id:"e8",label:"Vajacial seul",prix:40},
-    {id:"e9",label:"Interfessier",prix:5},
-    {id:"e10",label:"Épilation intégral + vajacial",prix:60},
-    {id:"e11",label:"PACK Aiselle + Demi-jambes + Maillot intégral 🆕",prix:50},
-  ]},
-  { id:"massage", label:"Massage", icon:"💆", items:[
-    {id:"mg1",label:"Massage relaxant corps entier (45min–1h)",prix:60},
-  ]},
-];
+const DEFAULT_CATS = [{
+  id: "manucure",
+  label: "Manucure",
+  icon: "💅",
+  items: [{
+    id: "m1",
+    label: "Gainage sur ongle naturel",
+    prix: 35
+  }, {
+    id: "m2",
+    label: "Pose Gel X",
+    prix: 40
+  }, {
+    id: "m3",
+    label: "Pose chablon",
+    prix: 50
+  }, {
+    id: "m4",
+    label: "Remplissage",
+    prix: 35
+  }, {
+    id: "m5",
+    label: "Remplissage pose extérieur",
+    prix: 40
+  }, {
+    id: "m6",
+    label: "Dépose Acrylique",
+    prix: 20
+  }, {
+    id: "m7",
+    label: "Dépose",
+    prix: 15
+  }, {
+    id: "m8",
+    label: "Nail art",
+    prix: null
+  }]
+}, {
+  id: "pedicure",
+  label: "Pédicure",
+  icon: "🦶",
+  items: [{
+    id: "p1",
+    label: "Vernis semi-perm simple",
+    prix: 20
+  }, {
+    id: "p2",
+    label: "Semi-Perm avec extension gros orteil",
+    prix: 35
+  }, {
+    id: "p3",
+    label: "Dépose + Repose vernis simple",
+    prix: 25
+  }, {
+    id: "p4",
+    label: "Remplissage",
+    prix: 30
+  }, {
+    id: "p5",
+    label: "Dépose acrylique",
+    prix: 20
+  }, {
+    id: "p6",
+    label: "Dépose",
+    prix: 15
+  }, {
+    id: "p7",
+    label: "Déco (strass, dessin, french élaboré)",
+    prix: 5
+  }]
+}, {
+  id: "soins-pieds",
+  label: "Soins des pieds",
+  icon: "✨",
+  items: [{
+    id: "sp1",
+    label: "Talon express",
+    prix: 25
+  }, {
+    id: "sp2",
+    label: "Soins des pieds",
+    prix: 40
+  }, {
+    id: "sp3",
+    label: "Soins + vernis semi-perm simple",
+    prix: 50
+  }, {
+    id: "sp4",
+    label: "Soins dépose + repose + vernis semi-perm",
+    prix: 60
+  }, {
+    id: "sp5",
+    label: "Soins + remplissage",
+    prix: 65
+  }, {
+    id: "sp6",
+    label: "Soins + vernis semi-perm + extension gros orteil",
+    prix: 70
+  }]
+}, {
+  id: "visage",
+  label: "Soins du visage",
+  icon: "🌸",
+  items: [{
+    id: "v1",
+    label: "Soins du visage",
+    prix: 45
+  }]
+}, {
+  id: "epilations",
+  label: "Épilations",
+  icon: "🌿",
+  items: [{
+    id: "e1",
+    label: "Sourcils",
+    prix: 10
+  }, {
+    id: "e2",
+    label: "Lèvre",
+    prix: 10
+  }, {
+    id: "e3",
+    label: "Aiselles",
+    prix: 10
+  }, {
+    id: "e4",
+    label: "Demi-jambe",
+    prix: 15
+  }, {
+    id: "e5",
+    label: "Jambes entières",
+    prix: 28
+  }, {
+    id: "e6",
+    label: "Maillot échancré",
+    prix: 25
+  }, {
+    id: "e7",
+    label: "Maillot intégral",
+    prix: 30
+  }, {
+    id: "e8",
+    label: "Vajacial seul",
+    prix: 40
+  }, {
+    id: "e9",
+    label: "Interfessier",
+    prix: 5
+  }, {
+    id: "e10",
+    label: "Épilation intégral + vajacial",
+    prix: 60
+  }, {
+    id: "e11",
+    label: "PACK Aiselle + Demi-jambes + Maillot intégral 🆕",
+    prix: 50
+  }]
+}, {
+  id: "massage",
+  label: "Massage",
+  icon: "💆",
+  items: [{
+    id: "mg1",
+    label: "Massage relaxant corps entier (45min–1h)",
+    prix: 60
+  }]
+}];
 
 // Les 4 créneaux fixes du planning de base
-const SLOTS_BASE = ["8h00","11h00","14h00","17h00"];
-
-const MOIS_NOMS = ["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"];
-const WK_NOMS = ["Lun","Mar","Mer","Jeu","Ven","Sam","Dim"];
-
-function dateKey(y,m,d) {
-  return `${y}-${String(m+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
+const SLOTS_BASE = ["8h00", "11h00", "14h00", "17h00"];
+const MOIS_NOMS = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
+const WK_NOMS = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"];
+function dateKey(y, m, d) {
+  return `${y}-${String(m + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
 }
-function daysInMonth(y,m) { return new Date(y, m+1, 0).getDate(); }
-function firstWeekdayOfMonth(y,m) {
+function daysInMonth(y, m) {
+  return new Date(y, m + 1, 0).getDate();
+}
+function firstWeekdayOfMonth(y, m) {
   // 0 = lundi ... 6 = dimanche
   const jsDay = new Date(y, m, 1).getDay(); // 0=dimanche
   return (jsDay + 6) % 7;
@@ -246,342 +365,438 @@ function load(key, fallback) {
   try {
     const raw = localStorage.getItem(key);
     return raw ? JSON.parse(raw) : fallback;
-  } catch (e) { return fallback; }
+  } catch (e) {
+    return fallback;
+  }
 }
 function save(key, val) {
-  try { localStorage.setItem(key, JSON.stringify(val)); } catch (e) {}
+  try {
+    localStorage.setItem(key, JSON.stringify(val));
+  } catch (e) {}
 }
-
-function Toast({ msg }) {
+function Toast({
+  msg
+}) {
   if (!msg) return null;
-  return <div className="toast">{msg}</div>;
+  return /*#__PURE__*/React.createElement("div", {
+    className: "toast"
+  }, msg);
 }
-
-function LoginScreen({ onLogin }) {
+function LoginScreen({
+  onLogin
+}) {
   const [pwd, setPwd] = useState("");
   const [err, setErr] = useState("");
-
   function tryLogin() {
-    if (pwd === ADMIN_PASSWORD) { onLogin(); }
-    else { setErr("Mot de passe incorrect"); }
+    if (pwd === ADMIN_PASSWORD) {
+      onLogin();
+    } else {
+      setErr("Mot de passe incorrect");
+    }
   }
-
-  return (
-    <div className="login-screen">
-      <div className="login-box">
-        <div className="login-emoji">🔐</div>
-        <div className="login-title">Espace pro</div>
-        <input
-          className="login-input" type="password" placeholder="Mot de passe"
-          value={pwd}
-          onChange={e=>{setPwd(e.target.value); setErr("");}}
-          onKeyDown={e=>{if(e.key==="Enter") tryLogin();}}
-          autoFocus
-        />
-        <div className="login-error">{err}</div>
-        <button className="login-btn" onClick={tryLogin}>Se connecter</button>
-      </div>
-    </div>
-  );
+  return /*#__PURE__*/React.createElement("div", {
+    className: "login-screen"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "login-box"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "login-emoji"
+  }, "🔐"), /*#__PURE__*/React.createElement("div", {
+    className: "login-title"
+  }, "Espace pro"), /*#__PURE__*/React.createElement("input", {
+    className: "login-input",
+    type: "password",
+    placeholder: "Mot de passe",
+    value: pwd,
+    onChange: e => {
+      setPwd(e.target.value);
+      setErr("");
+    },
+    onKeyDown: e => {
+      if (e.key === "Enter") tryLogin();
+    },
+    autoFocus: true
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "login-error"
+  }, err), /*#__PURE__*/React.createElement("button", {
+    className: "login-btn",
+    onClick: tryLogin
+  }, "Se connecter")));
 }
-
-function RdvTab({ showToast }) {
-  const [list, setList] = useState(()=>load("rdv_beaute_liste", []));
+function RdvTab({
+  showToast
+}) {
+  const [list, setList] = useState(() => load("rdv_beaute_liste", []));
   const [filter, setFilter] = useState("tous");
-
   function update(id, patch) {
-    const next = list.map(r=> r.id===id ? {...r, ...patch} : r);
-    setList(next); save("rdv_beaute_liste", next);
+    const next = list.map(r => r.id === id ? {
+      ...r,
+      ...patch
+    } : r);
+    setList(next);
+    save("rdv_beaute_liste", next);
   }
   function remove(id) {
-    const next = list.filter(r=>r.id!==id);
-    setList(next); save("rdv_beaute_liste", next);
+    const next = list.filter(r => r.id !== id);
+    setList(next);
+    save("rdv_beaute_liste", next);
     showToast("Rendez-vous supprimé");
   }
-
-  const filtered = list
-    .filter(r => filter==="tous" || r.statut===filter)
-    .sort((a,b)=> (a.jour||0)-(b.jour||0));
-
-  return (
-    <div>
-      <div className="section-title">Rendez-vous</div>
-      <div className="tabs" style={{padding:0, marginBottom:12}}>
-        {["tous","en_attente","confirme","annule"].map(f=>(
-          <div key={f} className={`tab ${filter===f?"active":""}`} onClick={()=>setFilter(f)} style={{fontSize:"0.7rem"}}>
-            {f==="tous"?"Tous":f==="en_attente"?"En attente":f==="confirme"?"Confirmés":"Annulés"}
-          </div>
-        ))}
-      </div>
-
-      {filtered.length===0 && <div className="empty-msg">Aucun rendez-vous pour le moment.</div>}
-
-      {filtered.map(r=>(
-        <div key={r.id} className={`rdv-card ${r.statut}`}>
-          <div className="rdv-top">
-            <div>
-              <div className="rdv-name">{r.prenom} {r.nom}</div>
-              <div className="rdv-when">{r.jour} juillet · {r.creneau}</div>
-            </div>
-            <span className={`rdv-statut ${r.statut}`}>
-              {r.statut==="en_attente"?"En attente":r.statut==="confirme"?"Confirmé":"Annulé"}
-            </span>
-          </div>
-          <div className="rdv-detail">💅 {r.prestation} — {r.prix}</div>
-          <div className="rdv-detail">📞 {r.tel}</div>
-          <div className="rdv-actions">
-            {r.statut!=="confirme" && <button className="btn-valider" onClick={()=>update(r.id,{statut:"confirme"})}>✓ Valider</button>}
-            {r.statut!=="annule" && <button className="btn-annuler" onClick={()=>update(r.id,{statut:"annule"})}>✕ Annuler</button>}
-            <button className="btn-suppr" onClick={()=>remove(r.id)}>🗑</button>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
+  const filtered = list.filter(r => filter === "tous" || r.statut === filter).sort((a, b) => (a.jour || 0) - (b.jour || 0));
+  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "section-title"
+  }, "Rendez-vous"), /*#__PURE__*/React.createElement("div", {
+    className: "tabs",
+    style: {
+      padding: 0,
+      marginBottom: 12
+    }
+  }, ["tous", "en_attente", "confirme", "annule"].map(f => /*#__PURE__*/React.createElement("div", {
+    key: f,
+    className: `tab ${filter === f ? "active" : ""}`,
+    onClick: () => setFilter(f),
+    style: {
+      fontSize: "0.7rem"
+    }
+  }, f === "tous" ? "Tous" : f === "en_attente" ? "En attente" : f === "confirme" ? "Confirmés" : "Annulés"))), filtered.length === 0 && /*#__PURE__*/React.createElement("div", {
+    className: "empty-msg"
+  }, "Aucun rendez-vous pour le moment."), filtered.map(r => /*#__PURE__*/React.createElement("div", {
+    key: r.id,
+    className: `rdv-card ${r.statut}`
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "rdv-top"
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "rdv-name"
+  }, r.prenom, " ", r.nom), /*#__PURE__*/React.createElement("div", {
+    className: "rdv-when"
+  }, r.jour, " juillet · ", r.creneau)), /*#__PURE__*/React.createElement("span", {
+    className: `rdv-statut ${r.statut}`
+  }, r.statut === "en_attente" ? "En attente" : r.statut === "confirme" ? "Confirmé" : "Annulé")), /*#__PURE__*/React.createElement("div", {
+    className: "rdv-detail"
+  }, "💅 ", r.prestation, " — ", r.prix), /*#__PURE__*/React.createElement("div", {
+    className: "rdv-detail"
+  }, "📞 ", r.tel), /*#__PURE__*/React.createElement("div", {
+    className: "rdv-actions"
+  }, r.statut !== "confirme" && /*#__PURE__*/React.createElement("button", {
+    className: "btn-valider",
+    onClick: () => update(r.id, {
+      statut: "confirme"
+    })
+  }, "✓ Valider"), r.statut !== "annule" && /*#__PURE__*/React.createElement("button", {
+    className: "btn-annuler",
+    onClick: () => update(r.id, {
+      statut: "annule"
+    })
+  }, "✕ Annuler"), /*#__PURE__*/React.createElement("button", {
+    className: "btn-suppr",
+    onClick: () => remove(r.id)
+  }, "🗑")))));
 }
-
-function ServicesTab({ showToast }) {
-  const [cats, setCats] = useState(()=>load("rdv_beaute_services", DEFAULT_CATS));
+function ServicesTab({
+  showToast
+}) {
+  const [cats, setCats] = useState(() => load("rdv_beaute_services", DEFAULT_CATS));
   const [newNames, setNewNames] = useState({});
-
-  function persist(next) { setCats(next); save("rdv_beaute_services", next); }
-
+  function persist(next) {
+    setCats(next);
+    save("rdv_beaute_services", next);
+  }
   function updatePrice(catId, itemId, val) {
-    const next = cats.map(c=>{
-      if (c.id!==catId) return c;
-      return {...c, items: c.items.map(it=> it.id===itemId ? {...it, prix: val===""?null:val} : it)};
+    const next = cats.map(c => {
+      if (c.id !== catId) return c;
+      return {
+        ...c,
+        items: c.items.map(it => it.id === itemId ? {
+          ...it,
+          prix: val === "" ? null : val
+        } : it)
+      };
     });
     persist(next);
   }
   function removeItem(catId, itemId) {
-    const next = cats.map(c=>{
-      if (c.id!==catId) return c;
-      return {...c, items: c.items.filter(it=>it.id!==itemId)};
+    const next = cats.map(c => {
+      if (c.id !== catId) return c;
+      return {
+        ...c,
+        items: c.items.filter(it => it.id !== itemId)
+      };
     });
     persist(next);
     showToast("Prestation supprimée");
   }
   function addItem(catId) {
-    const name = (newNames[catId]||"").trim();
+    const name = (newNames[catId] || "").trim();
     if (!name) return;
-    const next = cats.map(c=>{
-      if (c.id!==catId) return c;
-      const id = catId+"_"+Date.now();
-      return {...c, items: [...c.items, {id, label:name, prix:null}]};
+    const next = cats.map(c => {
+      if (c.id !== catId) return c;
+      const id = catId + "_" + Date.now();
+      return {
+        ...c,
+        items: [...c.items, {
+          id,
+          label: name,
+          prix: null
+        }]
+      };
     });
     persist(next);
-    setNewNames({...newNames, [catId]: ""});
+    setNewNames({
+      ...newNames,
+      [catId]: ""
+    });
     showToast("Prestation ajoutée");
   }
-
-  return (
-    <div>
-      <div className="section-title">Services & tarifs</div>
-      {cats.map(cat=>(
-        <div key={cat.id} className="cat-block">
-          <div className="cat-block-title"><span>{cat.icon}</span><span>{cat.label}</span></div>
-          {cat.items.map(it=>(
-            <div key={it.id} className="svc-row">
-              <span className="svc-name">{it.label}</span>
-              <input
-                className="svc-price-input" type="text" placeholder="Prix"
-                value={it.prix===null?"":it.prix}
-                onChange={e=>updatePrice(cat.id, it.id, e.target.value)}
-              />
-              <button className="svc-del" onClick={()=>removeItem(cat.id, it.id)}>✕</button>
-            </div>
-          ))}
-          <div className="add-svc-row">
-            <input
-              type="text" placeholder="Nouvelle prestation..."
-              value={newNames[cat.id]||""}
-              onChange={e=>setNewNames({...newNames, [cat.id]: e.target.value})}
-              onKeyDown={e=>{if(e.key==="Enter") addItem(cat.id);}}
-            />
-            <button onClick={()=>addItem(cat.id)}>Ajouter</button>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
+  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "section-title"
+  }, "Services & tarifs"), cats.map(cat => /*#__PURE__*/React.createElement("div", {
+    key: cat.id,
+    className: "cat-block"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "cat-block-title"
+  }, /*#__PURE__*/React.createElement("span", null, cat.icon), /*#__PURE__*/React.createElement("span", null, cat.label)), cat.items.map(it => /*#__PURE__*/React.createElement("div", {
+    key: it.id,
+    className: "svc-row"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "svc-name"
+  }, it.label), /*#__PURE__*/React.createElement("input", {
+    className: "svc-price-input",
+    type: "text",
+    placeholder: "Prix",
+    value: it.prix === null ? "" : it.prix,
+    onChange: e => updatePrice(cat.id, it.id, e.target.value)
+  }), /*#__PURE__*/React.createElement("button", {
+    className: "svc-del",
+    onClick: () => removeItem(cat.id, it.id)
+  }, "✕"))), /*#__PURE__*/React.createElement("div", {
+    className: "add-svc-row"
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    placeholder: "Nouvelle prestation...",
+    value: newNames[cat.id] || "",
+    onChange: e => setNewNames({
+      ...newNames,
+      [cat.id]: e.target.value
+    }),
+    onKeyDown: e => {
+      if (e.key === "Enter") addItem(cat.id);
+    }
+  }), /*#__PURE__*/React.createElement("button", {
+    onClick: () => addItem(cat.id)
+  }, "Ajouter")))));
 }
-
-function DispoTab({ showToast }) {
+function DispoTab({
+  showToast
+}) {
   // dispo: { "2026-07-15": ["8h00","14h00"], ... } — clé absente = jour ouvert avec planning de base, [] = jour fermé
-  const [dispo, setDispo] = useState(()=>load("rdv_beaute_dispo_v2", {}));
+  const [dispo, setDispo] = useState(() => load("rdv_beaute_dispo_v2", {}));
   const today = new Date();
   const [viewYear, setViewYear] = useState(today.getFullYear());
   const [viewMonth, setViewMonth] = useState(today.getMonth());
   const [selDate, setSelDate] = useState(null);
-
-  function persist(next) { setDispo(next); save("rdv_beaute_dispo_v2", next); }
-
+  function persist(next) {
+    setDispo(next);
+    save("rdv_beaute_dispo_v2", next);
+  }
   function getSlotsFor(key) {
     if (dispo.hasOwnProperty(key)) return dispo[key];
     return SLOTS_BASE.slice(); // planning de base par défaut
   }
-
   function toggleSlot(key, slot) {
     const current = getSlotsFor(key);
-    const next = current.includes(slot) ? current.filter(s=>s!==slot) : [...current, slot];
-    persist({...dispo, [key]: next});
+    const next = current.includes(slot) ? current.filter(s => s !== slot) : [...current, slot];
+    persist({
+      ...dispo,
+      [key]: next
+    });
   }
   function toggleClosed(key) {
     const isClosed = getSlotsFor(key).length === 0;
-    persist({...dispo, [key]: isClosed ? SLOTS_BASE.slice() : []});
+    persist({
+      ...dispo,
+      [key]: isClosed ? SLOTS_BASE.slice() : []
+    });
     showToast(isClosed ? "Jour rouvert" : "Jour fermé");
   }
   function applyToWeek(key) {
     const slots = getSlotsFor(key);
     const d = new Date(key);
-    const wd = (d.getDay()+6)%7; // 0=lundi
+    const wd = (d.getDay() + 6) % 7; // 0=lundi
     const monday = new Date(d);
-    monday.setDate(d.getDate()-wd);
-    const next = {...dispo};
-    for (let i=0;i<7;i++){
+    monday.setDate(d.getDate() - wd);
+    const next = {
+      ...dispo
+    };
+    for (let i = 0; i < 7; i++) {
       const dd = new Date(monday);
-      dd.setDate(monday.getDate()+i);
-      next[dateKey(dd.getFullYear(),dd.getMonth(),dd.getDate())] = slots.slice();
+      dd.setDate(monday.getDate() + i);
+      next[dateKey(dd.getFullYear(), dd.getMonth(), dd.getDate())] = slots.slice();
     }
     persist(next);
     showToast("Appliqué à toute la semaine");
   }
-
   function prevMonth() {
-    if (viewMonth===0) { setViewMonth(11); setViewYear(viewYear-1); }
-    else setViewMonth(viewMonth-1);
+    if (viewMonth === 0) {
+      setViewMonth(11);
+      setViewYear(viewYear - 1);
+    } else setViewMonth(viewMonth - 1);
   }
   function nextMonth() {
-    if (viewMonth===11) { setViewMonth(0); setViewYear(viewYear+1); }
-    else setViewMonth(viewMonth+1);
+    if (viewMonth === 11) {
+      setViewMonth(0);
+      setViewYear(viewYear + 1);
+    } else setViewMonth(viewMonth + 1);
   }
-
   const nbDays = daysInMonth(viewYear, viewMonth);
   const firstWd = firstWeekdayOfMonth(viewYear, viewMonth);
   const cells = [];
-  for (let i=0;i<firstWd;i++) cells.push(null);
-  for (let d=1; d<=nbDays; d++) cells.push(d);
-
+  for (let i = 0; i < firstWd; i++) cells.push(null);
+  for (let d = 1; d <= nbDays; d++) cells.push(d);
   const selKey = selDate ? dateKey(viewYear, viewMonth, selDate) : null;
   const selSlots = selKey ? getSlotsFor(selKey) : [];
   const selClosed = selSlots.length === 0;
-
-  return (
-    <div>
-      <div className="section-title">Disponibilités</div>
-
-      <div className="cal-nav">
-        <button className="cal-nav-btn" onClick={prevMonth}>‹</button>
-        <div className="cal-nav-month">{MOIS_NOMS[viewMonth]} {viewYear}</div>
-        <button className="cal-nav-btn" onClick={nextMonth}>›</button>
-      </div>
-
-      <div className="legend-row">
-        <div className="legend-item"><span className="legend-dot" style={{background:"#c9a0dc"}}></span>Créneau ouvert</div>
-        <div className="legend-item"><span className="legend-dot" style={{background:"#e8e0ec"}}></span>Créneau fermé</div>
-      </div>
-
-      <div className="month-grid">
-        <div className="wk-header">{WK_NOMS.map(w=><div key={w} className="wk-dname">{w}</div>)}</div>
-        <div className="wk-grid">
-          {cells.map((d,idx)=>{
-            if (!d) return <div key={idx} className="day-cell empty"/>;
-            const key = dateKey(viewYear, viewMonth, d);
-            const slots = getSlotsFor(key);
-            const closed = slots.length===0;
-            return (
-              <div key={d}
-                className={`day-cell ${selKey===key?"sel":""} ${closed?"closed":""}`}
-                onClick={()=>setSelDate(d)}
-              >
-                <span className="dn">{d}</span>
-                <div className="dot-row">
-                  {SLOTS_BASE.map(s=>(
-                    <span key={s} className={`mini-dot ${slots.includes(s)?"":"off"}`}/>
-                  ))}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      {selDate && (
-        <div className="day-editor">
-          <div className="day-editor-title">{selDate} {MOIS_NOMS[viewMonth]} {viewYear}</div>
-          <div className="day-editor-sub">{selClosed ? "Jour fermé" : `${selSlots.length} créneau${selSlots.length>1?"x":""} ouvert${selSlots.length>1?"s":""}`}</div>
-
-          <div className="slot-toggle-grid">
-            {SLOTS_BASE.map(s=>(
-              <div key={s}
-                className={`slot-toggle ${selSlots.includes(s)?"on":""}`}
-                onClick={()=>toggleSlot(selKey, s)}
-              >
-                {s}
-              </div>
-            ))}
-          </div>
-
-          <button className={`close-day-btn ${selClosed?"is-closed":""}`} onClick={()=>toggleClosed(selKey)}>
-            {selClosed ? "↺ Rouvrir ce jour" : "Fermer ce jour"}
-          </button>
-          <button className="apply-week-btn" onClick={()=>applyToWeek(selKey)}>Appliquer ces horaires à toute la semaine</button>
-
-          <div className="editor-hint">Touchez un créneau pour l'activer ou le désactiver. Les changements sont enregistrés automatiquement.</div>
-        </div>
-      )}
-    </div>
-  );
+  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "section-title"
+  }, "Disponibilités"), /*#__PURE__*/React.createElement("div", {
+    className: "cal-nav"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "cal-nav-btn",
+    onClick: prevMonth
+  }, "‹"), /*#__PURE__*/React.createElement("div", {
+    className: "cal-nav-month"
+  }, MOIS_NOMS[viewMonth], " ", viewYear), /*#__PURE__*/React.createElement("button", {
+    className: "cal-nav-btn",
+    onClick: nextMonth
+  }, "›")), /*#__PURE__*/React.createElement("div", {
+    className: "legend-row"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "legend-item"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "legend-dot",
+    style: {
+      background: "#c9a0dc"
+    }
+  }), "Créneau ouvert"), /*#__PURE__*/React.createElement("div", {
+    className: "legend-item"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "legend-dot",
+    style: {
+      background: "#e8e0ec"
+    }
+  }), "Créneau fermé")), /*#__PURE__*/React.createElement("div", {
+    className: "month-grid"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "wk-header"
+  }, WK_NOMS.map(w => /*#__PURE__*/React.createElement("div", {
+    key: w,
+    className: "wk-dname"
+  }, w))), /*#__PURE__*/React.createElement("div", {
+    className: "wk-grid"
+  }, cells.map((d, idx) => {
+    if (!d) return /*#__PURE__*/React.createElement("div", {
+      key: idx,
+      className: "day-cell empty"
+    });
+    const key = dateKey(viewYear, viewMonth, d);
+    const slots = getSlotsFor(key);
+    const closed = slots.length === 0;
+    return /*#__PURE__*/React.createElement("div", {
+      key: d,
+      className: `day-cell ${selKey === key ? "sel" : ""} ${closed ? "closed" : ""}`,
+      onClick: () => setSelDate(d)
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "dn"
+    }, d), /*#__PURE__*/React.createElement("div", {
+      className: "dot-row"
+    }, SLOTS_BASE.map(s => /*#__PURE__*/React.createElement("span", {
+      key: s,
+      className: `mini-dot ${slots.includes(s) ? "" : "off"}`
+    }))));
+  }))), selDate && /*#__PURE__*/React.createElement("div", {
+    className: "day-editor"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "day-editor-title"
+  }, selDate, " ", MOIS_NOMS[viewMonth], " ", viewYear), /*#__PURE__*/React.createElement("div", {
+    className: "day-editor-sub"
+  }, selClosed ? "Jour fermé" : `${selSlots.length} créneau${selSlots.length > 1 ? "x" : ""} ouvert${selSlots.length > 1 ? "s" : ""}`), /*#__PURE__*/React.createElement("div", {
+    className: "slot-toggle-grid"
+  }, SLOTS_BASE.map(s => /*#__PURE__*/React.createElement("div", {
+    key: s,
+    className: `slot-toggle ${selSlots.includes(s) ? "on" : ""}`,
+    onClick: () => toggleSlot(selKey, s)
+  }, s))), /*#__PURE__*/React.createElement("button", {
+    className: `close-day-btn ${selClosed ? "is-closed" : ""}`,
+    onClick: () => toggleClosed(selKey)
+  }, selClosed ? "↺ Rouvrir ce jour" : "Fermer ce jour"), /*#__PURE__*/React.createElement("button", {
+    className: "apply-week-btn",
+    onClick: () => applyToWeek(selKey)
+  }, "Appliquer ces horaires à toute la semaine"), /*#__PURE__*/React.createElement("div", {
+    className: "editor-hint"
+  }, "Touchez un créneau pour l'activer ou le désactiver. Les changements sont enregistrés automatiquement.")));
 }
-
-function Dashboard({ onLogout }) {
+function Dashboard({
+  onLogout
+}) {
   const [tab, setTab] = useState("rdv");
   const [toast, setToast] = useState("");
-
   function showToast(msg) {
     setToast(msg);
-    setTimeout(()=>setToast(""), 2200);
+    setTimeout(() => setToast(""), 2200);
   }
-
-  return (
-    <div className="wrap">
-      <div className="header" style={{position:"relative"}}>
-        <div className="header-title">💅 Espace pro</div>
-        <div className="header-sub">RDV Beauté · Gestion</div>
-        <button className="logout-btn" onClick={onLogout}>Déconnexion</button>
-      </div>
-      <div className="tabs">
-        <div className={`tab ${tab==="rdv"?"active":""}`} onClick={()=>setTab("rdv")}>📅 Rendez-vous</div>
-        <div className={`tab ${tab==="services"?"active":""}`} onClick={()=>setTab("services")}>💅 Services</div>
-        <div className={`tab ${tab==="dispo"?"active":""}`} onClick={()=>setTab("dispo")}>🗓 Disponibilités</div>
-      </div>
-      <div className="content">
-        {tab==="rdv" && <RdvTab showToast={showToast} />}
-        {tab==="services" && <ServicesTab showToast={showToast} />}
-        {tab==="dispo" && <DispoTab showToast={showToast} />}
-      </div>
-      <Toast msg={toast} />
-    </div>
-  );
+  return /*#__PURE__*/React.createElement("div", {
+    className: "wrap"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "header",
+    style: {
+      position: "relative"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "header-title"
+  }, "💅 Espace pro"), /*#__PURE__*/React.createElement("div", {
+    className: "header-sub"
+  }, "RDV Beauté · Gestion"), /*#__PURE__*/React.createElement("button", {
+    className: "logout-btn",
+    onClick: onLogout
+  }, "Déconnexion")), /*#__PURE__*/React.createElement("div", {
+    className: "tabs"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: `tab ${tab === "rdv" ? "active" : ""}`,
+    onClick: () => setTab("rdv")
+  }, "📅 Rendez-vous"), /*#__PURE__*/React.createElement("div", {
+    className: `tab ${tab === "services" ? "active" : ""}`,
+    onClick: () => setTab("services")
+  }, "💅 Services"), /*#__PURE__*/React.createElement("div", {
+    className: `tab ${tab === "dispo" ? "active" : ""}`,
+    onClick: () => setTab("dispo")
+  }, "🗓 Disponibilités")), /*#__PURE__*/React.createElement("div", {
+    className: "content"
+  }, tab === "rdv" && /*#__PURE__*/React.createElement(RdvTab, {
+    showToast: showToast
+  }), tab === "services" && /*#__PURE__*/React.createElement(ServicesTab, {
+    showToast: showToast
+  }), tab === "dispo" && /*#__PURE__*/React.createElement(DispoTab, {
+    showToast: showToast
+  })), /*#__PURE__*/React.createElement(Toast, {
+    msg: toast
+  }));
 }
-
 function App() {
-  const [authed, setAuthed] = useState(()=> sessionStorage.getItem("rdv_admin_auth")==="1");
-
+  const [authed, setAuthed] = useState(() => sessionStorage.getItem("rdv_admin_auth") === "1");
   function handleLogin() {
-    sessionStorage.setItem("rdv_admin_auth","1");
+    sessionStorage.setItem("rdv_admin_auth", "1");
     setAuthed(true);
   }
   function handleLogout() {
     sessionStorage.removeItem("rdv_admin_auth");
     setAuthed(false);
   }
-
-  if (!authed) return <LoginScreen onLogin={handleLogin} />;
-  return <Dashboard onLogout={handleLogout} />;
+  if (!authed) return /*#__PURE__*/React.createElement(LoginScreen, {
+    onLogin: handleLogin
+  });
+  return /*#__PURE__*/React.createElement(Dashboard, {
+    onLogout: handleLogout
+  });
 }
-
-ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+ReactDOM.createRoot(document.getElementById('root')).render(/*#__PURE__*/React.createElement(App, null));
 </script>
 </body>
 </html>

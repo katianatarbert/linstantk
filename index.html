@@ -9,10 +9,9 @@
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="theme-color" content="#c9a0dc" />
   <title>RDV Beauté</title>
+  <script src="vendor/react.production.min.js"></script>
+  <script src="vendor/react-dom.production.min.js"></script>
   <link rel="manifest" href="manifest.json" />
-  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -258,67 +257,187 @@
 </head>
 <body>
 <div id="root"></div>
-<script type="text/babel">
-const { useState } = React;
-
-const CATS = [
-  { id:"manucure", label:"Manucure", icon:"💅", items:[
-    {id:"m1",label:"Gainage sur ongle naturel",prix:"35€"},
-    {id:"m2",label:"Pose Gel X",prix:"40€"},
-    {id:"m3",label:"Pose chablon",prix:"50€"},
-    {id:"m4",label:"Remplissage",prix:"35€"},
-    {id:"m5",label:"Remplissage pose extérieur",prix:"40€"},
-    {id:"m6",label:"Dépose Acrylique",prix:"20€"},
-    {id:"m7",label:"Dépose",prix:"15€"},
-    {id:"m8",label:"Nail art",prix:"Sur devis"},
-  ]},
-  { id:"pedicure", label:"Pédicure", icon:"🦶", items:[
-    {id:"p1",label:"Vernis semi-perm simple",prix:"20€"},
-    {id:"p2",label:"Semi-Perm avec extension gros orteil",prix:"35€"},
-    {id:"p3",label:"Dépose + Repose vernis simple",prix:"25€"},
-    {id:"p4",label:"Remplissage",prix:"30€"},
-    {id:"p5",label:"Dépose acrylique",prix:"20€"},
-    {id:"p6",label:"Dépose",prix:"15€"},
-    {id:"p7",label:"Déco (strass, dessin, french élaboré)",prix:"+5€"},
-  ]},
-  { id:"soins-pieds", label:"Soins des pieds", icon:"✨", items:[
-    {id:"sp1",label:"Talon express",prix:"25€"},
-    {id:"sp2",label:"Soins des pieds",prix:"40€"},
-    {id:"sp3",label:"Soins + vernis semi-perm simple",prix:"50€"},
-    {id:"sp4",label:"Soins dépose + repose + vernis semi-perm",prix:"60€"},
-    {id:"sp5",label:"Soins + remplissage",prix:"65€"},
-    {id:"sp6",label:"Soins + vernis semi-perm + extension gros orteil",prix:"70€"},
-  ]},
-  { id:"visage", label:"Soins du visage", icon:"🌸", items:[
-    {id:"v1",label:"Soins du visage",prix:"45€"},
-  ]},
-  { id:"epilations", label:"Épilations", icon:"🌿", items:[
-    {id:"e1",label:"Sourcils",prix:"10€"},
-    {id:"e2",label:"Lèvre",prix:"10€"},
-    {id:"e3",label:"Aiselles",prix:"10€"},
-    {id:"e4",label:"Demi-jambe",prix:"15€"},
-    {id:"e5",label:"Jambes entières",prix:"28€"},
-    {id:"e6",label:"Maillot échancré",prix:"25€"},
-    {id:"e7",label:"Maillot intégral",prix:"30€"},
-    {id:"e8",label:"Vajacial seul",prix:"40€"},
-    {id:"e9",label:"Interfessier",prix:"5€"},
-    {id:"e10",label:"Épilation intégral + vajacial",prix:"60€"},
-    {id:"e11",label:"PACK Aiselle + Demi-jambes + Maillot intégral 🆕",prix:"50€"},
-  ]},
-  { id:"massage", label:"Massage", icon:"💆", items:[
-    {id:"mg1",label:"Massage relaxant corps entier (45min–1h)",prix:"60€"},
-  ]},
-];
-
-const SLOTS_BASE = ["8h00","11h00","14h00","17h00"];
-const MOIS_NOMS = ["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"];
-const JOURS = ["Lun","Mar","Mer","Jeu","Ven","Sam","Dim"];
-
-function dateKey(y,m,d) {
-  return `${y}-${String(m+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
+<script>
+const {
+  useState
+} = React;
+const CATS = [{
+  id: "manucure",
+  label: "Manucure",
+  icon: "💅",
+  items: [{
+    id: "m1",
+    label: "Gainage sur ongle naturel",
+    prix: "35€"
+  }, {
+    id: "m2",
+    label: "Pose Gel X",
+    prix: "40€"
+  }, {
+    id: "m3",
+    label: "Pose chablon",
+    prix: "50€"
+  }, {
+    id: "m4",
+    label: "Remplissage",
+    prix: "35€"
+  }, {
+    id: "m5",
+    label: "Remplissage pose extérieur",
+    prix: "40€"
+  }, {
+    id: "m6",
+    label: "Dépose Acrylique",
+    prix: "20€"
+  }, {
+    id: "m7",
+    label: "Dépose",
+    prix: "15€"
+  }, {
+    id: "m8",
+    label: "Nail art",
+    prix: "Sur devis"
+  }]
+}, {
+  id: "pedicure",
+  label: "Pédicure",
+  icon: "🦶",
+  items: [{
+    id: "p1",
+    label: "Vernis semi-perm simple",
+    prix: "20€"
+  }, {
+    id: "p2",
+    label: "Semi-Perm avec extension gros orteil",
+    prix: "35€"
+  }, {
+    id: "p3",
+    label: "Dépose + Repose vernis simple",
+    prix: "25€"
+  }, {
+    id: "p4",
+    label: "Remplissage",
+    prix: "30€"
+  }, {
+    id: "p5",
+    label: "Dépose acrylique",
+    prix: "20€"
+  }, {
+    id: "p6",
+    label: "Dépose",
+    prix: "15€"
+  }, {
+    id: "p7",
+    label: "Déco (strass, dessin, french élaboré)",
+    prix: "+5€"
+  }]
+}, {
+  id: "soins-pieds",
+  label: "Soins des pieds",
+  icon: "✨",
+  items: [{
+    id: "sp1",
+    label: "Talon express",
+    prix: "25€"
+  }, {
+    id: "sp2",
+    label: "Soins des pieds",
+    prix: "40€"
+  }, {
+    id: "sp3",
+    label: "Soins + vernis semi-perm simple",
+    prix: "50€"
+  }, {
+    id: "sp4",
+    label: "Soins dépose + repose + vernis semi-perm",
+    prix: "60€"
+  }, {
+    id: "sp5",
+    label: "Soins + remplissage",
+    prix: "65€"
+  }, {
+    id: "sp6",
+    label: "Soins + vernis semi-perm + extension gros orteil",
+    prix: "70€"
+  }]
+}, {
+  id: "visage",
+  label: "Soins du visage",
+  icon: "🌸",
+  items: [{
+    id: "v1",
+    label: "Soins du visage",
+    prix: "45€"
+  }]
+}, {
+  id: "epilations",
+  label: "Épilations",
+  icon: "🌿",
+  items: [{
+    id: "e1",
+    label: "Sourcils",
+    prix: "10€"
+  }, {
+    id: "e2",
+    label: "Lèvre",
+    prix: "10€"
+  }, {
+    id: "e3",
+    label: "Aiselles",
+    prix: "10€"
+  }, {
+    id: "e4",
+    label: "Demi-jambe",
+    prix: "15€"
+  }, {
+    id: "e5",
+    label: "Jambes entières",
+    prix: "28€"
+  }, {
+    id: "e6",
+    label: "Maillot échancré",
+    prix: "25€"
+  }, {
+    id: "e7",
+    label: "Maillot intégral",
+    prix: "30€"
+  }, {
+    id: "e8",
+    label: "Vajacial seul",
+    prix: "40€"
+  }, {
+    id: "e9",
+    label: "Interfessier",
+    prix: "5€"
+  }, {
+    id: "e10",
+    label: "Épilation intégral + vajacial",
+    prix: "60€"
+  }, {
+    id: "e11",
+    label: "PACK Aiselle + Demi-jambes + Maillot intégral 🆕",
+    prix: "50€"
+  }]
+}, {
+  id: "massage",
+  label: "Massage",
+  icon: "💆",
+  items: [{
+    id: "mg1",
+    label: "Massage relaxant corps entier (45min–1h)",
+    prix: "60€"
+  }]
+}];
+const SLOTS_BASE = ["8h00", "11h00", "14h00", "17h00"];
+const MOIS_NOMS = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
+const JOURS = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"];
+function dateKey(y, m, d) {
+  return `${y}-${String(m + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
 }
-function daysInMonth(y,m) { return new Date(y, m+1, 0).getDate(); }
-function firstWeekdayOfMonth(y,m) {
+function daysInMonth(y, m) {
+  return new Date(y, m + 1, 0).getDate();
+}
+function firstWeekdayOfMonth(y, m) {
   const jsDay = new Date(y, m, 1).getDay();
   return (jsDay + 6) % 7;
 }
@@ -326,14 +445,15 @@ function loadDispo() {
   try {
     const raw = localStorage.getItem("rdv_beaute_dispo_v2");
     return raw ? JSON.parse(raw) : {};
-  } catch(e) { return {}; }
+  } catch (e) {
+    return {};
+  }
 }
 function slotsForDate(dispo, key) {
   if (dispo.hasOwnProperty(key)) return dispo[key];
   return SLOTS_BASE.slice();
 }
-const STEP_LABELS = ["Prestation","Date","Infos","Confirmation"];
-
+const STEP_LABELS = ["Prestation", "Date", "Infos", "Confirmation"];
 function App() {
   const [step, setStep] = useState(1);
   const [openCat, setOpenCat] = useState(null);
@@ -343,36 +463,41 @@ function App() {
   const [viewMonth, setViewMonth] = useState(today.getMonth());
   const [selDay, setSelDay] = useState(null);
   const [selSlot, setSelSlot] = useState(null);
-  const [form, setForm] = useState({prenom:"",nom:"",tel:""});
+  const [form, setForm] = useState({
+    prenom: "",
+    nom: "",
+    tel: ""
+  });
   const [loading, setLoading] = useState(false);
-  const [dispo, setDispo] = useState(()=>loadDispo());
-
-  const pInfo = selPrest ? CATS.flatMap(c=>c.items).find(p=>p.id===selPrest) : null;
-  const cInfo = selPrest ? CATS.find(c=>c.items.some(p=>p.id===selPrest)) : null;
+  const [dispo, setDispo] = useState(() => loadDispo());
+  const pInfo = selPrest ? CATS.flatMap(c => c.items).find(p => p.id === selPrest) : null;
+  const cInfo = selPrest ? CATS.find(c => c.items.some(p => p.id === selPrest)) : null;
   const selKey = selDay ? dateKey(viewYear, viewMonth, selDay) : null;
   const slots = selKey ? slotsForDate(dispo, selKey) : [];
-
   const canStep2 = !!selPrest;
   const canStep3 = !!selDay && !!selSlot;
   const canStep4 = form.prenom.trim() && form.nom.trim() && form.tel.trim();
-
   const nbDays = daysInMonth(viewYear, viewMonth);
   const firstWd = firstWeekdayOfMonth(viewYear, viewMonth);
   const calCells = [];
-  for(let i=0;i<firstWd;i++) calCells.push(null);
-  for(let d=1;d<=nbDays;d++) calCells.push(d);
-
+  for (let i = 0; i < firstWd; i++) calCells.push(null);
+  for (let d = 1; d <= nbDays; d++) calCells.push(d);
   function prevMonth() {
-    setSelDay(null); setSelSlot(null);
-    if (viewMonth===0) { setViewMonth(11); setViewYear(viewYear-1); }
-    else setViewMonth(viewMonth-1);
+    setSelDay(null);
+    setSelSlot(null);
+    if (viewMonth === 0) {
+      setViewMonth(11);
+      setViewYear(viewYear - 1);
+    } else setViewMonth(viewMonth - 1);
   }
   function nextMonth() {
-    setSelDay(null); setSelSlot(null);
-    if (viewMonth===11) { setViewMonth(0); setViewYear(viewYear+1); }
-    else setViewMonth(viewMonth+1);
+    setSelDay(null);
+    setSelSlot(null);
+    if (viewMonth === 11) {
+      setViewMonth(0);
+      setViewYear(viewYear + 1);
+    } else setViewMonth(viewMonth + 1);
   }
-
   function confirm() {
     setLoading(true);
 
@@ -390,188 +515,276 @@ function App() {
         nom: form.nom,
         tel: form.tel,
         statut: "en_attente",
-        creeLe: new Date().toISOString(),
+        creeLe: new Date().toISOString()
       };
       const existants = JSON.parse(localStorage.getItem("rdv_beaute_liste") || "[]");
       existants.push(rdv);
       localStorage.setItem("rdv_beaute_liste", JSON.stringify(existants));
     } catch (e) {}
-
-    setTimeout(()=>{setLoading(false);setStep(5);},900);
+    setTimeout(() => {
+      setLoading(false);
+      setStep(5);
+    }, 900);
   }
   function reset() {
-    setStep(1);setOpenCat(null);setSelPrest(null);
-    setSelDay(null);setSelSlot(null);setForm({prenom:"",nom:"",tel:""});
+    setStep(1);
+    setOpenCat(null);
+    setSelPrest(null);
+    setSelDay(null);
+    setSelSlot(null);
+    setForm({
+      prenom: "",
+      nom: "",
+      tel: ""
+    });
   }
-
-  return (
-    <div className="app">
-      {/* HEADER */}
-      <div className="header">
-        <div className="header-title">💅 RDV Beauté</div>
-        <div className="header-sub">Esthéticienne · Martinique</div>
-        {step < 5 && <>
-          <div className="steps-row">
-            {[1,2,3,4].map(s=>(
-              <div key={s} className={`step-pill ${step===s?"active":step>s?"done":""}`} />
-            ))}
-          </div>
-          <div className="step-label-row">
-            {STEP_LABELS.map((l,i)=>(
-              <div key={i} className={`step-lbl ${step===i+1?"active":""}`}>{l}</div>
-            ))}
-          </div>
-        </>}
-      </div>
-
-      {/* CONTENU SCROLLABLE */}
-      <div className="scroll-area">
-
-        {/* ÉTAPE 1 */}
-        {step===1 && <>
-          <div className="section-title">Quelle prestation ?</div>
-          {CATS.map(cat=>(
-            <div key={cat.id}
-              className={`cat-card ${openCat===cat.id?"open":""} ${cInfo?.id===cat.id?"selected":""}`}
-              onClick={()=>setOpenCat(openCat===cat.id?null:cat.id)}
-            >
-              <div className="cat-header">
-                <span className="cat-icon">{cat.icon}</span>
-                <span className="cat-name">{cat.label}</span>
-                <span className="cat-chevron">▶️</span>
-              </div>
-              {openCat===cat.id && (
-                <div className="prestation-list" onClick={e=>e.stopPropagation()}>
-                  {cat.items.map(p=>(
-                    <div key={p.id}
-                      className={`prestation-item ${selPrest===p.id?"selected":""}`}
-                      onClick={()=>setSelPrest(selPrest===p.id?null:p.id)}
-                    >
-                      <span className="prestation-label">{p.label}</span>
-                      <span className="prestation-prix">{p.prix}</span>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
-          <div className="spacer"/>
-        </>}
-
-        {/* ÉTAPE 2 */}
-        {step===2 && <>
-          <div className="section-title">Choisissez une date</div>
-          {pInfo && <div className="sel-summary"><span>{cInfo?.icon}</span><span>{pInfo.label} — <strong>{pInfo.prix}</strong></span></div>}
-          <div className="cal-wrap">
-            <div className="cal-nav">
-              <button className="cal-nav-btn" onClick={prevMonth}>‹</button>
-              <div className="cal-month">{MOIS_NOMS[viewMonth]} {viewYear}</div>
-              <button className="cal-nav-btn" onClick={nextMonth}>›</button>
-            </div>
-            <div className="cal-header">{JOURS.map(d=><div key={d} className="cal-dname">{d}</div>)}</div>
-            <div className="cal-grid">
-              {calCells.map((day,idx)=>{
-                if(!day) return <div key={idx} className="cal-cell"/>;
-                const key = dateKey(viewYear, viewMonth, day);
-                const ok = slotsForDate(dispo, key).length>0;
-                return <div key={day} className={`cal-cell ${ok?"on":"off"} ${selDay===day?"sel":""}`}
-                  onClick={()=>{if(ok){setSelDay(day);setSelSlot(null);}}}>
-                  {day}
-                </div>;
-              })}
-            </div>
-            {selDay && <>
-              <div className="divider"/>
-              <div style={{fontSize:"0.8rem",color:"#999",marginBottom:6}}>
-                Créneaux le <strong style={{color:"#8b5e8f"}}>{selDay} {MOIS_NOMS[viewMonth]}</strong> :
-              </div>
-              <div className="slots-wrap">
-                {slots.map(s=>(
-                  <button key={s} className={`slot-btn ${selSlot===s?"sel":""}`} onClick={()=>setSelSlot(s)}>{s}</button>
-                ))}
-              </div>
-            </>}
-          </div>
-          <div className="spacer"/>
-        </>}
-
-        {/* ÉTAPE 3 */}
-        {step===3 && <>
-          <div className="section-title">Vos coordonnées</div>
-          <div className="sel-summary"><span>📅</span><span>Le <strong>{selDay} {MOIS_NOMS[viewMonth]}</strong> à <strong>{selSlot}</strong></span></div>
-          <div className="form-group">
-            <label className="form-label">Prénom</label>
-            <input className="form-input" type="text" placeholder="Votre prénom"
-              value={form.prenom} onChange={e=>setForm({...form,prenom:e.target.value})}/>
-          </div>
-          <div className="form-group">
-            <label className="form-label">Nom</label>
-            <input className="form-input" type="text" placeholder="Votre nom"
-              value={form.nom} onChange={e=>setForm({...form,nom:e.target.value})}/>
-          </div>
-          <div className="form-group">
-            <label className="form-label">Téléphone</label>
-            <input className="form-input" type="tel" placeholder="06 96 XX XX XX"
-              value={form.tel} onChange={e=>setForm({...form,tel:e.target.value})}/>
-          </div>
-          <div className="spacer"/>
-        </>}
-
-        {/* ÉTAPE 4 */}
-        {step===4 && <>
-          <div className="section-title">Récapitulatif</div>
-          <div className="recap-box">
-            <div className="recap-row"><span className="recap-icon">{cInfo?.icon}</span><div><span className="recap-label">Prestation</span><span className="recap-val">{pInfo?.label} — {pInfo?.prix}</span></div></div>
-            <div className="recap-row"><span className="recap-icon">📅</span><div><span className="recap-label">Date & heure</span><span className="recap-val">{selDay} {MOIS_NOMS[viewMonth]} {viewYear} à {selSlot}</span></div></div>
-            <div className="recap-row"><span className="recap-icon">👤</span><div><span className="recap-label">Nom</span><span className="recap-val">{form.prenom} {form.nom}</span></div></div>
-            <div className="recap-row"><span className="recap-icon">📞</span><div><span className="recap-label">Téléphone</span><span className="recap-val">{form.tel}</span></div></div>
-          </div>
-          <div className="warn-box">⚠️ Merci de confirmer votre présence <strong>24h à l'avance</strong>. En cas d'annulation tardive, le créneau sera proposé à quelqu'un d'autre.</div>
-          <div className="spacer"/>
-        </>}
-
-        {/* ÉTAPE 5 */}
-        {step===5 && <div className="success">
-          <div className="success-emoji">🌸</div>
-          <div className="success-title">Demande envoyée !</div>
-          <div className="success-msg">Merci <strong>{form.prenom}</strong> !<br/>Votre demande pour le <strong>{selDay} {MOIS_NOMS[viewMonth]} à {selSlot}</strong> a bien été reçue.</div>
-          <div className="warn-box" style={{textAlign:"left",marginBottom:20}}>
-            📞 Votre esthéticienne vous contactera au <strong>{form.tel}</strong> pour confirmer.<br/><br/>
-            ⚠️ <strong>Rappel :</strong> Confirmez 24h à l'avance. Merci !
-          </div>
-        </div>}
-
-      </div>
-
-      {/* BARRE DU BAS */}
-      <div className="bottom-bar">
-        {step===1 && <>
-          <div style={{flex:1}}/>
-          <button className="btn-main" disabled={!canStep2} onClick={()=>setStep(2)}>Choisir une date →</button>
-        </>}
-        {step===2 && <>
-          <button className="btn-back" onClick={()=>setStep(1)}>← Retour</button>
-          <button className="btn-main" disabled={!canStep3} onClick={()=>setStep(3)}>Continuer →</button>
-        </>}
-        {step===3 && <>
-          <button className="btn-back" onClick={()=>setStep(2)}>← Retour</button>
-          <button className="btn-main" disabled={!canStep4} onClick={()=>setStep(4)}>Vérifier →</button>
-        </>}
-        {step===4 && <>
-          <button className="btn-back" onClick={()=>setStep(3)}>← Modifier</button>
-          <button className="btn-main" disabled={loading} onClick={confirm}>{loading?"Envoi...":"✅ Confirmer"}</button>
-        </>}
-        {step===5 && <>
-          <button className="btn-main" onClick={reset}>Prendre un autre RDV</button>
-        </>}
-      </div>
-
-      {step===1 && <div className="admin-link"><a href="admin.html">Espace pro</a></div>}
-    </div>
-  );
+  return /*#__PURE__*/React.createElement("div", {
+    className: "app"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "header"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "header-title"
+  }, "💅 RDV Beauté"), /*#__PURE__*/React.createElement("div", {
+    className: "header-sub"
+  }, "Esthéticienne · Martinique"), step < 5 && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "steps-row"
+  }, [1, 2, 3, 4].map(s => /*#__PURE__*/React.createElement("div", {
+    key: s,
+    className: `step-pill ${step === s ? "active" : step > s ? "done" : ""}`
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "step-label-row"
+  }, STEP_LABELS.map((l, i) => /*#__PURE__*/React.createElement("div", {
+    key: i,
+    className: `step-lbl ${step === i + 1 ? "active" : ""}`
+  }, l))))), /*#__PURE__*/React.createElement("div", {
+    className: "scroll-area"
+  }, step === 1 && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "section-title"
+  }, "Quelle prestation ?"), CATS.map(cat => /*#__PURE__*/React.createElement("div", {
+    key: cat.id,
+    className: `cat-card ${openCat === cat.id ? "open" : ""} ${cInfo?.id === cat.id ? "selected" : ""}`,
+    onClick: () => setOpenCat(openCat === cat.id ? null : cat.id)
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "cat-header"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "cat-icon"
+  }, cat.icon), /*#__PURE__*/React.createElement("span", {
+    className: "cat-name"
+  }, cat.label), /*#__PURE__*/React.createElement("span", {
+    className: "cat-chevron"
+  }, "▶️")), openCat === cat.id && /*#__PURE__*/React.createElement("div", {
+    className: "prestation-list",
+    onClick: e => e.stopPropagation()
+  }, cat.items.map(p => /*#__PURE__*/React.createElement("div", {
+    key: p.id,
+    className: `prestation-item ${selPrest === p.id ? "selected" : ""}`,
+    onClick: () => setSelPrest(selPrest === p.id ? null : p.id)
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "prestation-label"
+  }, p.label), /*#__PURE__*/React.createElement("span", {
+    className: "prestation-prix"
+  }, p.prix)))))), /*#__PURE__*/React.createElement("div", {
+    className: "spacer"
+  })), step === 2 && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "section-title"
+  }, "Choisissez une date"), pInfo && /*#__PURE__*/React.createElement("div", {
+    className: "sel-summary"
+  }, /*#__PURE__*/React.createElement("span", null, cInfo?.icon), /*#__PURE__*/React.createElement("span", null, pInfo.label, " — ", /*#__PURE__*/React.createElement("strong", null, pInfo.prix))), /*#__PURE__*/React.createElement("div", {
+    className: "cal-wrap"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "cal-nav"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "cal-nav-btn",
+    onClick: prevMonth
+  }, "‹"), /*#__PURE__*/React.createElement("div", {
+    className: "cal-month"
+  }, MOIS_NOMS[viewMonth], " ", viewYear), /*#__PURE__*/React.createElement("button", {
+    className: "cal-nav-btn",
+    onClick: nextMonth
+  }, "›")), /*#__PURE__*/React.createElement("div", {
+    className: "cal-header"
+  }, JOURS.map(d => /*#__PURE__*/React.createElement("div", {
+    key: d,
+    className: "cal-dname"
+  }, d))), /*#__PURE__*/React.createElement("div", {
+    className: "cal-grid"
+  }, calCells.map((day, idx) => {
+    if (!day) return /*#__PURE__*/React.createElement("div", {
+      key: idx,
+      className: "cal-cell"
+    });
+    const key = dateKey(viewYear, viewMonth, day);
+    const ok = slotsForDate(dispo, key).length > 0;
+    return /*#__PURE__*/React.createElement("div", {
+      key: day,
+      className: `cal-cell ${ok ? "on" : "off"} ${selDay === day ? "sel" : ""}`,
+      onClick: () => {
+        if (ok) {
+          setSelDay(day);
+          setSelSlot(null);
+        }
+      }
+    }, day);
+  })), selDay && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "divider"
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "0.8rem",
+      color: "#999",
+      marginBottom: 6
+    }
+  }, "Créneaux le ", /*#__PURE__*/React.createElement("strong", {
+    style: {
+      color: "#8b5e8f"
+    }
+  }, selDay, " ", MOIS_NOMS[viewMonth]), " :"), /*#__PURE__*/React.createElement("div", {
+    className: "slots-wrap"
+  }, slots.map(s => /*#__PURE__*/React.createElement("button", {
+    key: s,
+    className: `slot-btn ${selSlot === s ? "sel" : ""}`,
+    onClick: () => setSelSlot(s)
+  }, s))))), /*#__PURE__*/React.createElement("div", {
+    className: "spacer"
+  })), step === 3 && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "section-title"
+  }, "Vos coordonnées"), /*#__PURE__*/React.createElement("div", {
+    className: "sel-summary"
+  }, /*#__PURE__*/React.createElement("span", null, "📅"), /*#__PURE__*/React.createElement("span", null, "Le ", /*#__PURE__*/React.createElement("strong", null, selDay, " ", MOIS_NOMS[viewMonth]), " à ", /*#__PURE__*/React.createElement("strong", null, selSlot))), /*#__PURE__*/React.createElement("div", {
+    className: "form-group"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "form-label"
+  }, "Prénom"), /*#__PURE__*/React.createElement("input", {
+    className: "form-input",
+    type: "text",
+    placeholder: "Votre prénom",
+    value: form.prenom,
+    onChange: e => setForm({
+      ...form,
+      prenom: e.target.value
+    })
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "form-group"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "form-label"
+  }, "Nom"), /*#__PURE__*/React.createElement("input", {
+    className: "form-input",
+    type: "text",
+    placeholder: "Votre nom",
+    value: form.nom,
+    onChange: e => setForm({
+      ...form,
+      nom: e.target.value
+    })
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "form-group"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "form-label"
+  }, "Téléphone"), /*#__PURE__*/React.createElement("input", {
+    className: "form-input",
+    type: "tel",
+    placeholder: "06 96 XX XX XX",
+    value: form.tel,
+    onChange: e => setForm({
+      ...form,
+      tel: e.target.value
+    })
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "spacer"
+  })), step === 4 && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "section-title"
+  }, "Récapitulatif"), /*#__PURE__*/React.createElement("div", {
+    className: "recap-box"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "recap-row"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "recap-icon"
+  }, cInfo?.icon), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("span", {
+    className: "recap-label"
+  }, "Prestation"), /*#__PURE__*/React.createElement("span", {
+    className: "recap-val"
+  }, pInfo?.label, " — ", pInfo?.prix))), /*#__PURE__*/React.createElement("div", {
+    className: "recap-row"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "recap-icon"
+  }, "📅"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("span", {
+    className: "recap-label"
+  }, "Date & heure"), /*#__PURE__*/React.createElement("span", {
+    className: "recap-val"
+  }, selDay, " ", MOIS_NOMS[viewMonth], " ", viewYear, " à ", selSlot))), /*#__PURE__*/React.createElement("div", {
+    className: "recap-row"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "recap-icon"
+  }, "👤"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("span", {
+    className: "recap-label"
+  }, "Nom"), /*#__PURE__*/React.createElement("span", {
+    className: "recap-val"
+  }, form.prenom, " ", form.nom))), /*#__PURE__*/React.createElement("div", {
+    className: "recap-row"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "recap-icon"
+  }, "📞"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("span", {
+    className: "recap-label"
+  }, "Téléphone"), /*#__PURE__*/React.createElement("span", {
+    className: "recap-val"
+  }, form.tel)))), /*#__PURE__*/React.createElement("div", {
+    className: "warn-box"
+  }, "⚠️ Merci de confirmer votre présence ", /*#__PURE__*/React.createElement("strong", null, "24h à l'avance"), ". En cas d'annulation tardive, le créneau sera proposé à quelqu'un d'autre."), /*#__PURE__*/React.createElement("div", {
+    className: "spacer"
+  })), step === 5 && /*#__PURE__*/React.createElement("div", {
+    className: "success"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "success-emoji"
+  }, "🌸"), /*#__PURE__*/React.createElement("div", {
+    className: "success-title"
+  }, "Demande envoyée !"), /*#__PURE__*/React.createElement("div", {
+    className: "success-msg"
+  }, "Merci ", /*#__PURE__*/React.createElement("strong", null, form.prenom), " !", /*#__PURE__*/React.createElement("br", null), "Votre demande pour le ", /*#__PURE__*/React.createElement("strong", null, selDay, " ", MOIS_NOMS[viewMonth], " à ", selSlot), " a bien été reçue."), /*#__PURE__*/React.createElement("div", {
+    className: "warn-box",
+    style: {
+      textAlign: "left",
+      marginBottom: 20
+    }
+  }, "📞 Votre esthéticienne vous contactera au ", /*#__PURE__*/React.createElement("strong", null, form.tel), " pour confirmer.", /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("br", null), "⚠️ ", /*#__PURE__*/React.createElement("strong", null, "Rappel :"), " Confirmez 24h à l'avance. Merci !"))), /*#__PURE__*/React.createElement("div", {
+    className: "bottom-bar"
+  }, step === 1 && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      flex: 1
+    }
+  }), /*#__PURE__*/React.createElement("button", {
+    className: "btn-main",
+    disabled: !canStep2,
+    onClick: () => setStep(2)
+  }, "Choisir une date →")), step === 2 && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("button", {
+    className: "btn-back",
+    onClick: () => setStep(1)
+  }, "← Retour"), /*#__PURE__*/React.createElement("button", {
+    className: "btn-main",
+    disabled: !canStep3,
+    onClick: () => setStep(3)
+  }, "Continuer →")), step === 3 && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("button", {
+    className: "btn-back",
+    onClick: () => setStep(2)
+  }, "← Retour"), /*#__PURE__*/React.createElement("button", {
+    className: "btn-main",
+    disabled: !canStep4,
+    onClick: () => setStep(4)
+  }, "Vérifier →")), step === 4 && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("button", {
+    className: "btn-back",
+    onClick: () => setStep(3)
+  }, "← Modifier"), /*#__PURE__*/React.createElement("button", {
+    className: "btn-main",
+    disabled: loading,
+    onClick: confirm
+  }, loading ? "Envoi..." : "✅ Confirmer")), step === 5 && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("button", {
+    className: "btn-main",
+    onClick: reset
+  }, "Prendre un autre RDV"))), step === 1 && /*#__PURE__*/React.createElement("div", {
+    className: "admin-link"
+  }, /*#__PURE__*/React.createElement("a", {
+    href: "admin.html"
+  }, "Espace pro")));
 }
-
-ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+ReactDOM.createRoot(document.getElementById('root')).render(/*#__PURE__*/React.createElement(App, null));
 </script>
 </body>
 </html>
