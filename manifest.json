@@ -1,0 +1,8 @@
+{
+  "name": "RDV Beauté",
+  "short_name": "RDV Beauté",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#fdf6f0",
+  "theme_color": "#c9a0dc"
+}
