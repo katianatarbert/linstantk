@@ -100,7 +100,7 @@
     .cal-week-header { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 4px; }
     .cal-week-header div { text-align: center; font-size: 0.75rem; font-weight: 700; color: var(--gray); text-transform: uppercase; padding: 8px 0; }
     .cal-month-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 24px; }
-    .cal-cell { aspect-ratio: 1; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; border: 2px solid transparent; transition: all .2s; position: relative; background: white; min-height: 52px; }
+    .cal-cell { aspect-ratio: 1; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; border: 2px solid transparent; transition: all .2s; position: relative; background: white; min-height: 72px; padding: 4px; }
     .cal-cell:hover:not(.empty):not(.past) { border-color: var(--violet); }
     .cal-cell.empty { background: transparent; cursor: default; }
     .cal-cell.has-slots { background: linear-gradient(135deg, var(--violet-pale), var(--pink-pale)); border-color: #C4B5FD; }
@@ -111,7 +111,7 @@
     .cal-cell-num { font-weight: 800; font-size: 0.95rem; color: var(--dark); }
     .cal-cell.has-slots .cal-cell-num { color: var(--violet); }
     .cal-cell.blocked .cal-cell-num { color: var(--red); }
-    .cal-cell-label { font-size: 0.58rem; font-weight: 700; color: var(--gray); margin-top: 2px; text-transform: uppercase; }
+    .cal-cell-label { font-size: 0.56rem; font-weight: 700; color: var(--gray); margin-top: 2px; text-transform: uppercase; text-align: center; line-height: 1.25; overflow: hidden; }
     .cal-cell.has-slots .cal-cell-label { color: var(--violet); }
     .cal-cell.blocked .cal-cell-label { color: var(--red); }
 
@@ -642,7 +642,7 @@ function renderCal() {
     if (isSelected) cls += ' selected';
     cell.className = cls;
 
-    const labelTxt = isBlocked ? 'Bloqué' : hasSlots ? slots.length + ' cr.' : '';
+    const labelTxt = isBlocked ? 'Bloqué' : hasSlots ? slots.join(', ') : '';
     cell.innerHTML = `<div class="cal-cell-num">${d}</div>${labelTxt ? `<div class="cal-cell-label">${labelTxt}</div>` : ''}`;
     if (!isPast) cell.onclick = () => multiMode ? toggleMultiDay(dateStr, cell) : selectDay(dateStr);
     grid.appendChild(cell);

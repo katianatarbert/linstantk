@@ -483,7 +483,9 @@ function renderCal() {
     const dateStr = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
     const cellDate = new Date(calYear, calMonth, d);
     const isPast = cellDate < limit;
-    const slots = DISPONIBILITES[dateStr] || [];
+    const rawSlots = DISPONIBILITES[dateStr] || [];
+    const isBlockedDay = rawSlots[0] === '__blocked__';
+    const slots = isBlockedDay ? [] : rawSlots;
 
     // Créneaux déjà pris (En attente ou Accepté)
     const pris = BOOKINGS
