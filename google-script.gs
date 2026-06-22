@@ -19,7 +19,8 @@ function doPost(e) {
         data.prestation || '',
         data.date || '',
         data.creneau || '',
-        'En attente'
+        'En attente',
+        data.message || ''
       ]);
       return jsonResponse({ success: true });
     }
@@ -77,7 +78,8 @@ function doGet(e) {
         prestation: rows[i][4],
         date: rows[i][5],
         creneau: rows[i][6],
-        status: rows[i][7] || 'En attente'
+        status: rows[i][7] || 'En attente',
+        message: rows[i][8] || ''
       });
     }
 
