@@ -193,8 +193,10 @@
     .btn-add-slot { background: linear-gradient(135deg, var(--violet), var(--pink)); color: white; border: none; padding: 10px 20px; border-radius: 50px; font-weight: 700; font-size: 0.85rem; cursor: pointer; white-space: nowrap; }
     .current-slots { display: flex; flex-wrap: wrap; gap: 8px; }
     .slot-tag { display: flex; align-items: center; gap: 6px; background: var(--violet-pale); color: var(--violet); font-size: 0.83rem; font-weight: 700; padding: 7px 14px; border-radius: 50px; }
+    .slot-tag.taken { background: #FEE2E2; color: var(--red); }
     .slot-tag button { background: none; border: none; cursor: pointer; color: var(--violet); opacity: 0.5; font-size: 0.9rem; padding: 0; }
     .slot-tag button:hover { opacity: 1; color: var(--red); }
+    .slot-tag.taken button { color: var(--red); }
     .no-slots { color: var(--gray); font-size: 0.88rem; font-style: italic; }
 
     /* TARIFS ADMIN */
@@ -736,7 +738,8 @@ function renderCal() {
     if (isSelected) cls += ' selected';
     cell.className = cls;
 
-    const labelTxt = isBlocked ? 'Bloqué' : hasSlots ? slots.join(', ') : '';
+    const taken = hasSlots ? getTakenSlots(dateStr) : [];
+    const labelTxt = isBlocked ? 'Bloqué' : hasSlots ? slots.map(s => taken.includes(s) ? `🔒${s}` : s).join(', ') : '';
     cell.innerHTML = `<div class="cal-cell-num">${d}</div>${labelTxt ? `<div class="cal-cell-label">${labelTxt}</div>` : ''}`;
     if (!isPast) cell.onclick = () => multiMode ? toggleMultiDay(dateStr, cell) : selectDay(dateStr);
     grid.appendChild(cell);
@@ -788,11 +791,18 @@ function toggleBlockDay() {
   renderCurrentSlots();
 }
 
+function getTakenSlots(dateStr) {
+  return allBookings
+    .filter(b => getSortKey(b.date) === dateStr && (b.status === 'En attente' || b.status === 'Accepté'))
+    .map(b => b.creneau);
+}
+
 function renderCurrentSlots() {
   const slots = (dispo[selectedDate] || []).filter(s => s !== '__blocked__');
   const container = document.getElementById('currentSlots');
   if (!slots.length) { container.innerHTML = '<div class="no-slots">Aucun créneau — ajoutez-en ci-dessus.</div>'; return; }
-  container.innerHTML = slots.map((s,i) => `<div class="slot-tag">${s}<button onclick="removeSlot(${i})">✕</button></div>`).join('');
+  const taken = getTakenSlots(selectedDate);
+  container.innerHTML = slots.map((s,i) => `<div class="slot-tag${taken.includes(s) ? ' taken' : ''}">${taken.includes(s) ? '🔒 ' : ''}${s}${taken.includes(s) ? ' (réservé)' : ''}<button onclick="removeSlot(${i})">✕</button></div>`).join('');
 }
 
 function updatePresetBtns() {

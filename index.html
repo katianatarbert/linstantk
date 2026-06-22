@@ -651,10 +651,10 @@ async function init() {
     }
 
     if (data.bookings) {
-      // Enrichir avec date_str pour comparaison
+      // Normalise la date (peut arriver en timestamp ISO complet depuis Sheets) pour comparaison avec "YYYY-MM-DD"
       BOOKINGS = data.bookings.map(b => {
-        // date_str peut être stocké séparément ou reconstruit
-        return { ...b, date_str: b.date_str || b.date };
+        const raw = b.date_str || b.date || '';
+        return { ...b, date_str: raw.split('T')[0] };
       });
     }
   } catch(e) {
