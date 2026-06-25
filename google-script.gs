@@ -97,11 +97,6 @@ function doGet(e) {
 }
 
 function notifyTelegramNewRdv(data) {
-  const props = PropertiesService.getScriptProperties();
-  const token = props.getProperty('TELEGRAM_BOT_TOKEN');
-  const chatId = props.getProperty('TELEGRAM_CHAT_ID');
-  if (!token || !chatId) return; // Notifications non configurées
-
   const lines = [
     '📅 Nouvelle demande de RDV',
     `${data.prenom || ''} ${data.nom || ''}`.trim(),
@@ -111,17 +106,62 @@ function notifyTelegramNewRdv(data) {
     data.telephone ? `Téléphone : ${data.telephone}` : '',
     data.message ? `Message : ${data.message}` : ''
   ].filter(Boolean);
+  sendTelegramMessage(lines.join('\n'));
+}
 
+function getDateKey(value) {
+  if (!value) return '';
+  if (value instanceof Date) return Utilities.formatDate(value, 'Europe/Paris', 'yyyy-MM-dd');
+  return String(value).split('T')[0];
+}
+
+function sendTelegramMessage(text) {
+  const props = PropertiesService.getScriptProperties();
+  const token = props.getProperty('TELEGRAM_BOT_TOKEN');
+  const chatId = props.getProperty('TELEGRAM_CHAT_ID');
+  if (!token || !chatId) return;
   try {
     UrlFetchApp.fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
       method: 'post',
       contentType: 'application/json',
-      payload: JSON.stringify({ chat_id: chatId, text: lines.join('\n') }),
+      payload: JSON.stringify({ chat_id: chatId, text: text }),
       muteHttpExceptions: true
     });
   } catch (err) {
     Logger.log('Erreur notification Telegram: ' + err);
   }
+}
+
+function sendDailyReminders() {
+  const tz = 'Europe/Paris';
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const tomorrowKey = Utilities.formatDate(tomorrow, tz, 'yyyy-MM-dd');
+
+  const rdvSheet = getSheet('RDV');
+  const rows = rdvSheet.getDataRange().getValues();
+  const rdvsDemain = [];
+  for (let i = 1; i < rows.length; i++) {
+    const status = rows[i][7] || 'En attente';
+    if (status !== 'Accepté') continue;
+    if (getDateKey(rows[i][5]) !== tomorrowKey) continue;
+    rdvsDemain.push({
+      prenom: rows[i][1],
+      nom: rows[i][2],
+      telephone: rows[i][3],
+      prestation: rows[i][4],
+      creneau: rows[i][6]
+    });
+  }
+
+  if (!rdvsDemain.length) return;
+
+  const lines = ['⏰ Rappel : RDV demain (' + tomorrowKey + ')', ''];
+  rdvsDemain.forEach(b => {
+    lines.push(`• ${b.creneau || '?'} — ${b.prenom} ${b.nom} (${b.prestation})${b.telephone ? ' — 📞 ' + b.telephone : ''}`);
+  });
+
+  sendTelegramMessage(lines.join('\n'));
 }
 
 function jsonResponse(data) {
